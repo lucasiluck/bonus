@@ -7,11 +7,13 @@ public abstract class Funcionario {
     private int cargo;
     private int departamento;
 
-    public Funcionario(int id, float salario, int cargo , int departamento){
+    public Funcionario(int id,String nome, float salario, int cargo , int departamento){
         this.id = id;
+        this.nome = nome;
         this.salario = salario;
         this.cargo = cargo;
         this.departamento = departamento;
+
     }
 
     public float getSalario() {

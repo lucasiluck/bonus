@@ -3,8 +3,8 @@ package br.com.lucas.bonus;
 public class Vendedor extends Funcionario {
     private float venda;
 
-    public Vendedor(int id, float salario, int cargo, int departamento ,float venda) {
-        super(id, salario, cargo, departamento);
+    public Vendedor(int id,String nome, float salario, int cargo, int departamento ,float venda) {
+        super(id,nome, salario, cargo, departamento);
         this.venda = venda;
     }
 

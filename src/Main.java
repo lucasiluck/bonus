@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) throws BonusException {
         float maiorVenda = 0;
         int vencedor = 0;
+        int elegiveis = 0;
 
         //Gerando uma lista de departamentos
         ArrayList<Departamento> departamentos = new ArrayList<Departamento>();
@@ -24,17 +25,15 @@ public class Main {
 
         //Gerando uma lista de Vendedores
         ArrayList<Vendedor> vendedores = new ArrayList<Vendedor>();
-        vendedores.add(new Vendedor(1,100000.0f, 1,telemarkting.getId(),30000.0f));
-        vendedores.add(new Vendedor(2,200000.0f, 1,telemarkting.getId(),20000.0f));
-        vendedores.add(new Vendedor(3,300000.0f, 1, oficina.getId(), 20000.0f));
-        vendedores.add(new Vendedor(3,300000.0f, 1, oficina.getId(), 20000.0f));
-        vendedores.add(new Vendedor(3,100000.0f, 1, externo.getId(), 120000.0f));
+        vendedores.add(new Vendedor(1,"Joao",1000000.0f, 1,telemarkting.getId(),30000.0f));
+        vendedores.add(new Vendedor(1,"Maria",100000.0f, 1,telemarkting.getId(),20000.0f));
+        vendedores.add(new Vendedor(3,"José",100000.0f, 1, oficina.getId(), 20000.0f));
+        vendedores.add(new Vendedor(3,"Jean",100000.0f, 1, oficina.getId(), 20000.0f));
+        vendedores.add(new Vendedor(3,"Edenilson",100000.0f, 1, externo.getId(), 20000.0f));
 
-        //
         for(Vendedor vendedor:vendedores){
             //Calcula salario de vendedor atualizado com comissão
             vendedor.salario();
-
             //Passa os valores de vendas dos vendedores para os departamentos
             if(vendedor.getDepartamento() == 1){
                 telemarkting.totalVendas(vendedor.getVenda());
@@ -44,26 +43,26 @@ public class Main {
                 externo.totalVendas(vendedor.getVenda());
             }
         }
-
-        //Identificando qual departamento obteve melhor resultado
+        //Verifica departamento com maior numero de vendas
         for(Departamento departamento:departamentos){
             if(departamento.getTotalVendas() > maiorVenda){
                 maiorVenda = departamento.getTotalVendas();
                 vencedor = departamento.getId();
             }
         }
-
-        //Teste para aplicar salario em vendedores com valor de salario abaixo de 150k
+        //Verifica se há funcionarios elegiveis a receber bonus maximo para erro 2
         for(Vendedor vendedor:vendedores){
             if(vendedor.getDepartamento() == vencedor && vendedor.getSalario() < 150000){
-                vendedor.setSalario(2000);
-            }else{
-                vendedor.setSalario(1000);
+                elegiveis += 1;
             }
-            System.out.println(vendedor.getSalario());
         }
-
         //Gerando Bonus através da Classe Bonus
-        Bonus bonus = new Bonus(vendedores);
+        try {
+            Bonus bonus = new Bonus(vendedores, departamentos , elegiveis);
+            bonus.aplicarBonus(vendedores,vencedor);
+        }
+        catch (BonusException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
